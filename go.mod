@@ -3,7 +3,6 @@ module github.com/onebids/onecommon
 go 1.23.1
 
 require (
-	github.com/cloudwego/biz-demo/gomall/common v0.0.0-20240701024504-2486f0201b8f
 	github.com/cloudwego/kitex v0.11.3
 	github.com/hertz-contrib/obs-opentelemetry/provider v0.3.0
 	github.com/kitex-contrib/config-consul v0.1.3
