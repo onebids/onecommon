@@ -23,12 +23,12 @@ import (
 	consul "github.com/kitex-contrib/registry-consul"
 )
 
-type CommonGrpcClientSuite struct {
+type CommonClientSuite struct {
 	CurrentServiceName string
 	RegistryAddr       string
 }
 
-func (s CommonGrpcClientSuite) Options() []client.Option {
+func (s CommonClientSuite) Options() []client.Option {
 	r, err := consul.NewConsulResolver(s.RegistryAddr)
 	if err != nil {
 		panic(err)
@@ -38,9 +38,7 @@ func (s CommonGrpcClientSuite) Options() []client.Option {
 		client.WithLoadBalancer(loadbalance.NewWeightedBalancer()), // load balance
 		//client.WithMuxConnection(1),                                // multiplexing 这个在windown 下不支持
 		client.WithMetaHandler(transmeta.ClientHTTP2Handler),
-		//client.WithTransportProtocol(transport.GRPC), // grpc 不使用 grpc
 	}
-
 	opts = append(opts,
 		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{
 			ServiceName: s.CurrentServiceName,
