@@ -21,6 +21,8 @@ import (
 	"github.com/cloudwego/kitex/pkg/transmeta"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	consul "github.com/kitex-contrib/registry-consul"
+	"github.com/onebids/onecommon/utils"
+	"strings"
 )
 
 type CommonClientSuite struct {
@@ -29,6 +31,10 @@ type CommonClientSuite struct {
 }
 
 func (s CommonClientSuite) Options() []client.Option {
+	// 如果以 ： 开头，则默认为本机地址这里强制指定一下，不然服务发现可能出现不可用的IP
+	if strings.HasPrefix(s.RegistryAddr, ":") {
+		s.RegistryAddr = utils.MustGetLocalIPv4() + s.RegistryAddr
+	}
 	r, err := consul.NewConsulResolver(s.RegistryAddr)
 	if err != nil {
 		panic(err)
