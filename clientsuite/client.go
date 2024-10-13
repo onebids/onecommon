@@ -18,7 +18,6 @@ import (
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/loadbalance"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
-	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	consul "github.com/kitex-contrib/registry-consul"
 )
 
@@ -35,7 +34,7 @@ func (s CommonGrpcClientSuite) Options() []client.Option {
 	opts := []client.Option{
 		client.WithResolver(r),
 		client.WithLoadBalancer(loadbalance.NewWeightedBalancer()), // load balance
-		client.WithMuxConnection(1),                                // multiplexing
+		//client.WithMuxConnection(1),                                // multiplexing
 		//client.WithMetaHandler(transmeta.ClientHTTP2Handler),
 		//client.WithTransportProtocol(transport.GRPC),
 	}
@@ -44,7 +43,7 @@ func (s CommonGrpcClientSuite) Options() []client.Option {
 		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{
 			ServiceName: s.CurrentServiceName,
 		}),
-		client.WithSuite(tracing.NewClientSuite()),
+		//client.WithSuite(tracing.NewClientSuite()),
 	)
 
 	return opts
