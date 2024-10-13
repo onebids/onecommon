@@ -17,6 +17,7 @@ package utils
 import (
 	"errors"
 	"net"
+	"strings"
 )
 
 func GetLocalIPv4() (string, error) {
@@ -48,4 +49,11 @@ func MustGetLocalIPv4() string {
 		panic("get local IP error")
 	}
 	return ipv4
+}
+
+func AddLocalIpv4(addr string) string {
+	if strings.HasPrefix(addr, ":") {
+		addr = MustGetLocalIPv4() + addr
+	}
+	return addr
 }

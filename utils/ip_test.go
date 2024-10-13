@@ -39,3 +39,23 @@ func TestMustGetLocalIPv4(t *testing.T) {
 		})
 	}
 }
+
+func TestAddLocalIpv4(t *testing.T) {
+	type args struct {
+		addr string
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{name: "ipv42", args: args{addr: ":8080"}, want: "127.0.0.1:8080"},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := AddLocalIpv4(tt.args.addr); got != tt.want {
+				t.Errorf("AddLocalIpv4() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
