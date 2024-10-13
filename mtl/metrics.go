@@ -36,8 +36,8 @@ func InitMetric(serviceName string, metricsPort string, registryAddr string) {
 	Registry.MustRegister(collectors.NewProcessCollector(collectors.ProcessCollectorOpts{}))
 
 	// 如果以 ： 开头，则默认为本机地址这里强制指定一下，不然服务发现可能出现不可用的IP
-	if strings.HasPrefix(registryAddr, ":") {
-		registryAddr = utils.MustGetLocalIPv4() + registryAddr
+	if strings.HasPrefix(metricsPort, ":") {
+		metricsPort = utils.MustGetLocalIPv4() + metricsPort
 	}
 	r, _ := consul.NewConsulRegister(registryAddr)
 
