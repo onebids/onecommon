@@ -8,6 +8,7 @@ import (
 	"github.com/hertz-contrib/gzip"
 	"github.com/hertz-contrib/paseto"
 	"github.com/onebids/onecommon/consts"
+	"github.com/onebids/onecommon/errno"
 	"github.com/onebids/onecommon/model"
 	"net/http"
 )
@@ -31,7 +32,7 @@ func PasetoAuth(audience string, pi model.PasetoConfig) app.HandlerFunc {
 	sh := func(ctx context.Context, c *app.RequestContext, token *pt.Token) {
 		aid, err := token.GetString("id")
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, tools.BuildBaseResp(errno.BadRequest.WithMessage("missing accountID in token")))
+			c.JSON(http.StatusUnauthorized, BuildBaseResp(errno.BadRequest.WithMessage("missing accountID in token")))
 			c.Abort()
 			return
 		}

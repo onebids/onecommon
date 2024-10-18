@@ -2,6 +2,7 @@ package tools
 
 import (
 	"errors"
+	"github.com/onebids/onecommon/errno"
 	"github.com/onebids/onecommon/model"
 )
 
@@ -18,7 +19,7 @@ func BuildBaseResp(err error) *model.BaseResponse {
 }
 
 func baseResp(err errno.ErrNo) *model.BaseResponse {
-	return &base.BaseResponse{
+	return &model.BaseResponse{
 		StatusCode: err.ErrCode,
 		StatusMsg:  err.ErrMsg,
 	}
