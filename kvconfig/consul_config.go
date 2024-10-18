@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/hashicorp/consul/api"
+	"github.com/onebids/onecommon/model"
 	"gopkg.in/yaml.v2"
 )
 
@@ -52,6 +53,28 @@ func GetCommonConfig(registryAddr string) (*CommonConfig, error) {
 		return nil, err
 	}
 	conf := new(CommonConfig)
+	err = yaml.Unmarshal(content.Value, &conf)
+	if err != nil {
+		klog.Error("parse yaml error - %v", err)
+		panic(err)
+	}
+
+	return conf, nil
+}
+
+func GetPasetoPubConfig(registryAddr string) (*model.PasetoConfig, error) {
+	client, err := api.NewClient(&api.Config{Address: registryAddr})
+	if err != nil {
+		fmt.Println("Error creating Consul client:", err)
+		return nil, err
+	}
+	//获取配置
+	content, _, err := client.KV().Get("onebids/pasetopub", nil)
+	if err != nil {
+		fmt.Println("Error getting config:", err)
+		return nil, err
+	}
+	conf := new(model.PasetoConfig)
 	err = yaml.Unmarshal(content.Value, &conf)
 	if err != nil {
 		klog.Error("parse yaml error - %v", err)
