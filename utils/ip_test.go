@@ -30,6 +30,7 @@ func TestMustGetLocalIPv4(t *testing.T) {
 		want string
 	}{
 		{name: "ipv41", want: "IP_ADDRESS"},
+		{name: "ipv42", want: "IP_ADDRESS"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
