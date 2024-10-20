@@ -40,7 +40,7 @@ func PasetoAuth(audience string, pi model.PasetoConfig) app.HandlerFunc {
 	}
 
 	eh := func(ctx context.Context, c *app.RequestContext) {
-		//c.JSON(http.StatusUnauthorized, tools.BuildBaseResp(errno.BadRequest.WithMessage("invalid token")))
+		//c.JSON(http.StatusUnauthorized, tools.BuildBaseResp(errno.thrift.BadRequest.WithMessage("invalid token")))
 		c.Abort()
 	}
 	return paseto.New(paseto.WithTokenPrefix("Bearer "), paseto.WithParseFunc(pf), paseto.WithSuccessHandler(sh), paseto.WithErrorFunc(eh))

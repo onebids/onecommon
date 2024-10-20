@@ -3,7 +3,7 @@ package tools
 import (
 	"errors"
 	"github.com/onebids/onecommon/base"
-	"github.com/onebids/onecommon/errno"
+	"github.com/onebids/onecommon/consts/errno"
 )
 
 func BuildBaseResp(err error) *base.BaseResponse {
@@ -12,13 +12,13 @@ func BuildBaseResp(err error) *base.BaseResponse {
 	}
 	e := errno.ErrNo{}
 	if errors.As(err, &e) {
-		return baseResp(e)
+		return baseResp(&e)
 	}
 	s := errno.ServiceErr.WithMessage(err.Error())
-	return baseResp(s)
+	return baseResp(&s)
 }
 
-func baseResp(err errno.ErrNo) *base.BaseResponse {
+func baseResp(err *errno.ErrNo) *base.BaseResponse {
 	return &base.BaseResponse{
 		StatusCode: err.ErrCode,
 		StatusMsg:  err.ErrMsg,
@@ -46,9 +46,9 @@ func BuildBaseRespFailNoParams() *base.BaseResponse {
 	}
 }
 
-func ParseBaseResp(resp *base.BaseResponse) error {
-	if resp.StatusCode == errno.Success.ErrCode {
-		return nil
-	}
-	return errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
-}
+//func ParseBaseResp(resp *base.BaseResponse) error {
+//	if resp.StatusCode == errno.Success.ErrCode {
+//		return nil
+//	}
+//	return errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
+//}
