@@ -21,8 +21,8 @@ const (
 	Err_ServiceErr         Err = 20000
 	Err_RPCUserSrvErr      Err = 30000
 	Err_UserSrvErr         Err = 30001
-	Err_RPCBlobSrvErr      Err = 40000
-	Err_BlobSrvErr         Err = 40001
+	Err_RPCSystemSrvErr    Err = 40000
+	Err_SystemSrvErr       Err = 40001
 	Err_RPCCarSrvErr       Err = 50000
 	Err_CarSrvErr          Err = 50001
 	Err_RPCProfileSrvErr   Err = 60000
@@ -56,10 +56,10 @@ func (p Err) String() string {
 		return "RPCUserSrvErr"
 	case Err_UserSrvErr:
 		return "UserSrvErr"
-	case Err_RPCBlobSrvErr:
-		return "RPCBlobSrvErr"
-	case Err_BlobSrvErr:
-		return "BlobSrvErr"
+	case Err_RPCSystemSrvErr:
+		return "RPCSystemSrvErr"
+	case Err_SystemSrvErr:
+		return "SystemSrvErr"
 	case Err_RPCCarSrvErr:
 		return "RPCCarSrvErr"
 	case Err_CarSrvErr:
@@ -104,10 +104,10 @@ func ErrFromString(s string) (Err, error) {
 		return Err_RPCUserSrvErr, nil
 	case "UserSrvErr":
 		return Err_UserSrvErr, nil
-	case "RPCBlobSrvErr":
-		return Err_RPCBlobSrvErr, nil
-	case "BlobSrvErr":
-		return Err_BlobSrvErr, nil
+	case "RPCSystemSrvErr":
+		return Err_RPCSystemSrvErr, nil
+	case "SystemSrvErr":
+		return Err_SystemSrvErr, nil
 	case "RPCCarSrvErr":
 		return Err_RPCCarSrvErr, nil
 	case "CarSrvErr":
