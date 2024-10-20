@@ -25,6 +25,27 @@ func baseResp(err errno.ErrNo) *model.BaseResponse {
 	}
 }
 
+func baseRespSuccess(msg string) *model.BaseResponse {
+	return &model.BaseResponse{
+		StatusCode: errno.Success.ErrCode,
+		StatusMsg:  msg,
+	}
+}
+
+func baseRespSuccessNoParams() *model.BaseResponse {
+	return &model.BaseResponse{
+		StatusCode: errno.Success.ErrCode,
+		StatusMsg:  "Success",
+	}
+}
+
+func baseRespFailNoParams() *model.BaseResponse {
+	return &model.BaseResponse{
+		StatusCode: errno.BadRequest.ErrCode,
+		StatusMsg:  "Fail",
+	}
+}
+
 func ParseBaseResp(resp *model.BaseResponse) error {
 	if resp.StatusCode == errno.Success.ErrCode {
 		return nil
