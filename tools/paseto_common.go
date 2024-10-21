@@ -8,7 +8,7 @@ import (
 	"github.com/hertz-contrib/gzip"
 	"github.com/hertz-contrib/paseto"
 	"github.com/onebids/onecommon/consts"
-	"github.com/onebids/onecommon/errno"
+	"github.com/onebids/onecommon/consts/errno"
 	"github.com/onebids/onecommon/model"
 	"net/http"
 )
