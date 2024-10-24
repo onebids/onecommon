@@ -7,8 +7,8 @@ import (
 )
 
 type BaseResponse struct {
-	StatusCode int64  `thrift:"status_code,1" frugal:"1,default,i64" json:"status_code"`
-	StatusMsg  string `thrift:"status_msg,2" frugal:"2,default,string" json:"status_msg"`
+	Code int64  `thrift:"code,1" frugal:"1,default,i64" json:"code"`
+	Msg  string `thrift:"msg,2" frugal:"2,default,string" json:"msg"`
 }
 
 func NewBaseResponse() *BaseResponse {
@@ -18,23 +18,23 @@ func NewBaseResponse() *BaseResponse {
 func (p *BaseResponse) InitDefault() {
 }
 
-func (p *BaseResponse) GetStatusCode() (v int64) {
-	return p.StatusCode
+func (p *BaseResponse) GetCode() (v int64) {
+	return p.Code
 }
 
-func (p *BaseResponse) GetStatusMsg() (v string) {
-	return p.StatusMsg
+func (p *BaseResponse) GetMsg() (v string) {
+	return p.Msg
 }
-func (p *BaseResponse) SetStatusCode(val int64) {
-	p.StatusCode = val
+func (p *BaseResponse) SetCode(val int64) {
+	p.Code = val
 }
-func (p *BaseResponse) SetStatusMsg(val string) {
-	p.StatusMsg = val
+func (p *BaseResponse) SetMsg(val string) {
+	p.Msg = val
 }
 
 var fieldIDToName_BaseResponse = map[int16]string{
-	1: "status_code",
-	2: "status_msg",
+	1: "code",
+	2: "msg",
 }
 
 func (p *BaseResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -109,7 +109,7 @@ func (p *BaseResponse) ReadField1(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.StatusCode = _field
+	p.Code = _field
 	return nil
 }
 func (p *BaseResponse) ReadField2(iprot thrift.TProtocol) error {
@@ -120,7 +120,7 @@ func (p *BaseResponse) ReadField2(iprot thrift.TProtocol) error {
 	} else {
 		_field = v
 	}
-	p.StatusMsg = _field
+	p.Msg = _field
 	return nil
 }
 
@@ -157,10 +157,10 @@ WriteStructEndError:
 }
 
 func (p *BaseResponse) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("status_code", thrift.I64, 1); err != nil {
+	if err = oprot.WriteFieldBegin("code", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.StatusCode); err != nil {
+	if err := oprot.WriteI64(p.Code); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -174,10 +174,10 @@ WriteFieldEndError:
 }
 
 func (p *BaseResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("status_msg", thrift.STRING, 2); err != nil {
+	if err = oprot.WriteFieldBegin("msg", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.StatusMsg); err != nil {
+	if err := oprot.WriteString(p.Msg); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -204,10 +204,10 @@ func (p *BaseResponse) DeepEqual(ano *BaseResponse) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.StatusCode) {
+	if !p.Field1DeepEqual(ano.Code) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.StatusMsg) {
+	if !p.Field2DeepEqual(ano.Msg) {
 		return false
 	}
 	return true
@@ -215,14 +215,14 @@ func (p *BaseResponse) DeepEqual(ano *BaseResponse) bool {
 
 func (p *BaseResponse) Field1DeepEqual(src int64) bool {
 
-	if p.StatusCode != src {
+	if p.Code != src {
 		return false
 	}
 	return true
 }
 func (p *BaseResponse) Field2DeepEqual(src string) bool {
 
-	if strings.Compare(p.StatusMsg, src) != 0 {
+	if strings.Compare(p.Msg, src) != 0 {
 		return false
 	}
 	return true

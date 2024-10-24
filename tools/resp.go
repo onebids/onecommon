@@ -20,29 +20,29 @@ func BuildBaseResp(err error) *base.BaseResponse {
 
 func baseResp(err *errno.ErrNo) *base.BaseResponse {
 	return &base.BaseResponse{
-		StatusCode: err.ErrCode,
-		StatusMsg:  err.ErrMsg,
+		Code: err.ErrCode,
+		Msg:  err.ErrMsg,
 	}
 }
 
 func BuildBaseRespSuccess(msg string) *base.BaseResponse {
 	return &base.BaseResponse{
-		StatusCode: errno.Success.ErrCode,
-		StatusMsg:  msg,
+		Code: errno.Success.ErrCode,
+		Msg:  msg,
 	}
 }
 
 func BuildBaseRespSuccessNoParams() *base.BaseResponse {
 	return &base.BaseResponse{
-		StatusCode: errno.Success.ErrCode,
-		StatusMsg:  "Success",
+		Code: errno.Success.ErrCode,
+		Msg:  "Success",
 	}
 }
 
 func BuildBaseRespFailNoParams() *base.BaseResponse {
 	return &base.BaseResponse{
-		StatusCode: errno.BadRequest.ErrCode,
-		StatusMsg:  "Fail",
+		Code: errno.BadRequest.ErrCode,
+		Msg:  "Fail",
 	}
 }
 
