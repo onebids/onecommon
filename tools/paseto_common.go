@@ -36,12 +36,13 @@ func PasetoAuth(audience string, pi model.PasetoConfig) app.HandlerFunc {
 			c.Abort()
 			return
 		}
-		c.Set(consts.AccountID, aid)
+		// 将 AccountID 存储在 context 中
+		ctx = context.WithValue(ctx, consts.AccountID, aid)
 	}
 
 	eh := func(ctx context.Context, c *app.RequestContext) {
 		//c.JSON(http.StatusUnauthorized, tools.BuildBaseResp(errno.thrift.BadRequest.WithMessage("invalid token")))
 		c.Abort()
 	}
-	return paseto.New(paseto.WithTokenPrefix("Bearer "), paseto.WithParseFunc(pf), paseto.WithSuccessHandler(sh), paseto.WithErrorFunc(eh))
+	return paseto.New(paseto.WithParseFunc(pf), paseto.WithSuccessHandler(sh), paseto.WithErrorFunc(eh))
 }
