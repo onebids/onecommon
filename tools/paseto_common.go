@@ -40,6 +40,7 @@ func PasetoAuth(audience string, pi model.PasetoConfig) app.HandlerFunc {
 		fmt.Println("解析得到用户ID：" + aid)
 		// 将 AccountID 存储在 context 中
 		ctx = context.WithValue(ctx, consts.AccountID, aid)
+		c.Next(ctx)
 	}
 
 	eh := func(ctx context.Context, c *app.RequestContext) {
