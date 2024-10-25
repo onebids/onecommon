@@ -3,7 +3,6 @@ package tools
 import (
 	pt "aidanwoods.dev/go-paseto"
 	"context"
-	"fmt"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/hertz-contrib/gzip"
@@ -37,14 +36,13 @@ func PasetoAuth(audience string, pi model.PasetoConfig) app.HandlerFunc {
 			c.Abort()
 			return
 		}
-		fmt.Println("解析得到用户ID：" + aid)
 		// 将 AccountID 存储在 context 中
 		ctx = context.WithValue(ctx, consts.AccountID, aid)
 		c.Next(ctx)
 	}
 
 	eh := func(ctx context.Context, c *app.RequestContext) {
-		//c.JSON(http.StatusUnauthorized, tools.BuildBaseResp(errno.thrift.BadRequest.WithMessage("invalid token")))
+		c.JSON(http.StatusUnauthorized, BuildBaseResp(errno.BadRequest.WithMessage("invalid token")))
 		c.Abort()
 	}
 	return paseto.New(paseto.WithParseFunc(pf), paseto.WithSuccessHandler(sh), paseto.WithErrorFunc(eh))
