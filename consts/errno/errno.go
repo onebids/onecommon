@@ -3,126 +3,275 @@
 package errno
 
 import (
+	"database/sql"
+	"database/sql/driver"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
 var (
 	Success = &ErrNo{
-		ErrCode: 0,
+		ErrCode: int64(Err_Success),
 		ErrMsg:  "success",
 	}
 
 	NoRoute = &ErrNo{
-		ErrCode: 1,
+		ErrCode: int64(Err_NoRoute),
 		ErrMsg:  "no route",
 	}
 
 	NoMethod = &ErrNo{
-		ErrCode: 2,
+		ErrCode: int64(Err_NoMethod),
 		ErrMsg:  "no method",
 	}
 
 	BadRequest = &ErrNo{
-		ErrCode: 3,
+		ErrCode: int64(Err_BadRequest),
 		ErrMsg:  "bad request",
 	}
 
 	ParamsErr = &ErrNo{
-		ErrCode: 4,
+		ErrCode: int64(Err_ParamsErr),
 		ErrMsg:  "params error",
 	}
 
 	AuthorizeFail = &ErrNo{
-		ErrCode: 5,
+		ErrCode: int64(Err_AuthorizeFail),
 		ErrMsg:  "authorize failed",
 	}
 
 	TooManyRequest = &ErrNo{
-		ErrCode: 6,
+		ErrCode: int64(Err_TooManyRequest),
 		ErrMsg:  "too many requests",
 	}
 
 	ServiceErr = &ErrNo{
-		ErrCode: 7,
+		ErrCode: int64(Err_ServiceErr),
 		ErrMsg:  "service error",
 	}
 
 	RPCUserSrvErr = &ErrNo{
-		ErrCode: 40100,
+		ErrCode: int64(Err_RPCUserSrvErr),
 		ErrMsg:  "rpc user service error",
 	}
 
 	UserSrvErr = &ErrNo{
-		ErrCode: 30100,
+		ErrCode: int64(Err_UserSrvErr),
 		ErrMsg:  "user service error",
 	}
 
 	RPCUserAdminSrvErr = &ErrNo{
-		ErrCode: 40200,
+		ErrCode: int64(Err_RPCUserAdminSrvErr),
 		ErrMsg:  "rpc system service error",
 	}
 
 	UserAdminSrvErr = &ErrNo{
-		ErrCode: 30200,
+		ErrCode: int64(Err_UserAdminSrvErr),
 		ErrMsg:  "system service error",
 	}
 
 	RPCProductSrvErr = &ErrNo{
-		ErrCode: 40300,
+		ErrCode: int64(Err_RPCProductSrvErr),
 		ErrMsg:  "rpc car service error",
 	}
 
 	ProductSrvErr = &ErrNo{
-		ErrCode: 30300,
+		ErrCode: int64(Err_ProductSrvErr),
 		ErrMsg:  "car service error",
 	}
 
 	RPCOrderSrvErr = &ErrNo{
-		ErrCode: 40400,
+		ErrCode: int64(Err_RPCOrderSrvErr),
 		ErrMsg:  "rpc profile service error",
 	}
 
 	OrderSrvErr = &ErrNo{
-		ErrCode: 30400,
+		ErrCode: int64(Err_OrderSrvErr),
 		ErrMsg:  "profile service error",
 	}
 
 	RPCActivitySrvErr = &ErrNo{
-		ErrCode: 40500,
+		ErrCode: int64(Err_RPCActivitySrvErr),
 		ErrMsg:  "rpc trip service error",
 	}
 
 	ActivitySrvErr = &ErrNo{
-		ErrCode: 30500,
+		ErrCode: int64(Err_ActivitySrvErr),
 		ErrMsg:  "trip service error",
 	}
 
 	RPCCartSrvErr = &ErrNo{
-		ErrCode: 40600,
+		ErrCode: int64(Err_RPCCartSrvErr),
 		ErrMsg:  "rpc trip service error",
 	}
 
 	CartSrvErr = &ErrNo{
-		ErrCode: 30600,
+		ErrCode: int64(Err_CartSrvErr),
 		ErrMsg:  "trip service error",
 	}
 
 	RecordNotFound = &ErrNo{
-		ErrCode: 18,
+		ErrCode: int64(Err_RecordNotFound),
 		ErrMsg:  "record not found",
 	}
 
 	RecordAlreadyExist = &ErrNo{
-		ErrCode: 19,
+		ErrCode: int64(Err_RecordAlreadyExist),
 		ErrMsg:  "record already exist",
 	}
 
 	DirtyData = &ErrNo{
-		ErrCode: 20,
+		ErrCode: int64(Err_DirtyData),
 		ErrMsg:  "dirty data",
 	}
 )
+
+type Err int64
+
+const (
+	Err_Success            Err = 200
+	Err_NoRoute            Err = 405
+	Err_NoMethod           Err = 404
+	Err_BadRequest         Err = 500
+	Err_ParamsErr          Err = 504
+	Err_AuthorizeFail      Err = 403
+	Err_TooManyRequest     Err = 429
+	Err_ServiceErr         Err = 502
+	Err_RecordNotFound     Err = 1000
+	Err_RecordAlreadyExist Err = 1010
+	Err_DirtyData          Err = 1020
+	Err_RPCUserSrvErr      Err = 30001
+	Err_RPCUserAdminSrvErr Err = 30002
+	Err_RPCOrderSrvErr     Err = 30003
+	Err_RPCProductSrvErr   Err = 30004
+	Err_RPCActivitySrvErr  Err = 30005
+	Err_RPCCartSrvErr      Err = 30006
+	Err_UserSrvErr         Err = 40001
+	Err_UserAdminSrvErr    Err = 40002
+	Err_OrderSrvErr        Err = 40003
+	Err_ProductSrvErr      Err = 40004
+	Err_ActivitySrvErr     Err = 40005
+	Err_CartSrvErr         Err = 40006
+)
+
+func (p Err) String() string {
+	switch p {
+	case Err_Success:
+		return "Success"
+	case Err_NoRoute:
+		return "NoRoute"
+	case Err_NoMethod:
+		return "NoMethod"
+	case Err_BadRequest:
+		return "BadRequest"
+	case Err_ParamsErr:
+		return "ParamsErr"
+	case Err_AuthorizeFail:
+		return "AuthorizeFail"
+	case Err_TooManyRequest:
+		return "TooManyRequest"
+	case Err_ServiceErr:
+		return "ServiceErr"
+	case Err_RecordNotFound:
+		return "RecordNotFound"
+	case Err_RecordAlreadyExist:
+		return "RecordAlreadyExist"
+	case Err_DirtyData:
+		return "DirtyData"
+	case Err_RPCUserSrvErr:
+		return "RPCUserSrvErr"
+	case Err_RPCUserAdminSrvErr:
+		return "RPCUserAdminSrvErr"
+	case Err_RPCOrderSrvErr:
+		return "RPCOrderSrvErr"
+	case Err_RPCProductSrvErr:
+		return "RPCProductSrvErr"
+	case Err_RPCActivitySrvErr:
+		return "RPCActivitySrvErr"
+	case Err_RPCCartSrvErr:
+		return "RPCCartSrvErr"
+	case Err_UserSrvErr:
+		return "UserSrvErr"
+	case Err_UserAdminSrvErr:
+		return "UserAdminSrvErr"
+	case Err_OrderSrvErr:
+		return "OrderSrvErr"
+	case Err_ProductSrvErr:
+		return "ProductSrvErr"
+	case Err_ActivitySrvErr:
+		return "ActivitySrvErr"
+	case Err_CartSrvErr:
+		return "CartSrvErr"
+	}
+	return "<UNSET>"
+}
+
+func ErrFromString(s string) (Err, error) {
+	switch s {
+	case "Success":
+		return Err_Success, nil
+	case "NoRoute":
+		return Err_NoRoute, nil
+	case "NoMethod":
+		return Err_NoMethod, nil
+	case "BadRequest":
+		return Err_BadRequest, nil
+	case "ParamsErr":
+		return Err_ParamsErr, nil
+	case "AuthorizeFail":
+		return Err_AuthorizeFail, nil
+	case "TooManyRequest":
+		return Err_TooManyRequest, nil
+	case "ServiceErr":
+		return Err_ServiceErr, nil
+	case "RecordNotFound":
+		return Err_RecordNotFound, nil
+	case "RecordAlreadyExist":
+		return Err_RecordAlreadyExist, nil
+	case "DirtyData":
+		return Err_DirtyData, nil
+	case "RPCUserSrvErr":
+		return Err_RPCUserSrvErr, nil
+	case "RPCUserAdminSrvErr":
+		return Err_RPCUserAdminSrvErr, nil
+	case "RPCOrderSrvErr":
+		return Err_RPCOrderSrvErr, nil
+	case "RPCProductSrvErr":
+		return Err_RPCProductSrvErr, nil
+	case "RPCActivitySrvErr":
+		return Err_RPCActivitySrvErr, nil
+	case "RPCCartSrvErr":
+		return Err_RPCCartSrvErr, nil
+	case "UserSrvErr":
+		return Err_UserSrvErr, nil
+	case "UserAdminSrvErr":
+		return Err_UserAdminSrvErr, nil
+	case "OrderSrvErr":
+		return Err_OrderSrvErr, nil
+	case "ProductSrvErr":
+		return Err_ProductSrvErr, nil
+	case "ActivitySrvErr":
+		return Err_ActivitySrvErr, nil
+	case "CartSrvErr":
+		return Err_CartSrvErr, nil
+	}
+	return Err(0), fmt.Errorf("not a valid Err string")
+}
+
+func ErrPtr(v Err) *Err { return &v }
+func (p *Err) Scan(value interface{}) (err error) {
+	var result sql.NullInt64
+	err = result.Scan(value)
+	*p = Err(result.Int64)
+	return
+}
+
+func (p *Err) Value() (driver.Value, error) {
+	if p == nil {
+		return nil, nil
+	}
+	return int64(*p), nil
+}
 
 type ErrNo struct {
 	ErrCode int64  `thrift:"ErrCode,1" form:"ErrCode" json:"ErrCode" query:"ErrCode"`

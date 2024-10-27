@@ -9,6 +9,7 @@ const (
 	ThirtyDays = time.Hour * 24 * 30
 	AccountID  = "accountID"
 	ID         = "id"
+	Language   = "language"
 
 	HlogFilePath = "./tmp/hlog/logs/"
 	KlogFilePath = "./tmp/klog/logs/"
@@ -32,27 +33,6 @@ const (
 	ConsulCheckInterval                       = "7s"
 	ConsulCheckTimeout                        = "5s"
 	ConsulCheckDeregisterCriticalServiceAfter = "15s"
-
-	RedisImage         = "redis:latest"
-	RedisContainerPort = "6379/tcp"
-	RedisContainerIP   = "127.0.0.1"
-	RedisPort          = "0"
-
-	MySQLImage         = "mysql:latest"
-	MySQLContainerPort = "3306/tcp"
-	MySQLContainerIP   = "127.0.0.1"
-	MySQLPort          = "0"
-	MySQLAdmin         = "root"
-	DockerTestMySQLPwd = "123456"
-
-	MongoImage         = "mongo:latest"
-	MongoContainerPort = "27017/tcp"
-	MongoContainerIP   = "127.0.0.1"
-	MongoPort          = "0"
-
-	CarCollection     = "car"
-	ProfileCollection = "profile"
-	TripCollection    = "trip"
 
 	RedisProfileClientDB = 0
 	RedisBlobClientDB    = 0
