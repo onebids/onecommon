@@ -5,11 +5,10 @@ import (
 	"errors"
 	"github.com/cloudwego/kitex/pkg/kerrors"
 	"github.com/cloudwego/kitex/pkg/remote"
-	"github.com/onebids/onecommon/consts/errno"
 )
 
 // convert errors that can be serialized
-func ServerErrorHandler(ctx context.Context, err error, err_no errno.Err) error {
+func ServerErrorHandler(ctx context.Context, err error) error {
 	// if you want get other rpc info, you can get rpcinfo first, like `ri := rpcinfo.GetRPCInfo(ctx)`
 	// for example, get remote address: `remoteAddr := rpcinfo.GetRPCInfo(ctx).From().Address()`
 
