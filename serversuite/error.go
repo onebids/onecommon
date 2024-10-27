@@ -16,12 +16,11 @@ func ServerErrorHandler(ctx context.Context, err error, err_no errno.Err) error 
 	if errors.Is(err, kerrors.ErrBiz) {
 		err = errors.Unwrap(err)
 	}
-	return remote.NewTransError(int32(err_no), err)
-	//if errCode, ok := GetErrorCode(err); ok {
-	//	// for Thrift、KitexProtobuf
-	//	return remote.NewTransError(errCode, err)
-	//}
-	//return err
+	if errCode, ok := GetErrorCode(err); ok {
+		// for Thrift、KitexProtobuf
+		return remote.NewTransError(errCode, err)
+	}
+	return err
 }
 
 func GetErrorCode(err error) (int32, bool) {
