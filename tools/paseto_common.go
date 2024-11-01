@@ -3,6 +3,7 @@ package tools
 import (
 	pt "aidanwoods.dev/go-paseto"
 	"context"
+	"github.com/bytedance/gopkg/cloud/metainfo"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/hertz-contrib/gzip"
@@ -38,6 +39,7 @@ func PasetoAuth(audience string, pi model.PasetoConfig) app.HandlerFunc {
 		}
 		// 将 AccountID 存储在 context 中
 		ctx = context.WithValue(ctx, consts.AccountID, aid)
+		ctx = metainfo.WithValue(ctx, consts.AccountID, aid)
 		c.Next(ctx)
 	}
 
