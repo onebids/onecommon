@@ -2,6 +2,7 @@ package tools
 
 import (
 	"errors"
+	"github.com/bytedance/sonic"
 	"github.com/onebids/onecommon/base"
 	"github.com/onebids/onecommon/consts/errno"
 )
@@ -46,9 +47,15 @@ func BuildBaseRespFailNoParams() *base.BaseResponse {
 	}
 }
 
-//func ParseBaseResp(resp *base.BaseResponse) error {
-//	if resp.StatusCode == errno.Success.ErrCode {
-//		return nil
-//	}
-//	return errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
-//}
+// ConventKitexToHertz 转换kitex返回的response为hertz的response
+func ConventKitexToHertz[T any](kitexResp interface{}) (hertzResp T, err error) {
+	marshal, err := sonic.Marshal(kitexResp)
+	if err != nil {
+		return hertzResp, err
+	}
+	err = sonic.Unmarshal(marshal, &hertzResp)
+	if err != nil {
+		return hertzResp, err
+	}
+	return hertzResp, nil
+}
