@@ -10,7 +10,7 @@ const (
 	AccountID       = "accountID"
 	ID              = "id"
 	Language        = "language"
-	DefalutLanguage = "zh"
+	DefaultLanguage = "zh"
 
 	HlogFilePath = "./tmp/hlog/logs/"
 	KlogFilePath = "./tmp/klog/logs/"
