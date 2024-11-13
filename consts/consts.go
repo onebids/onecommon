@@ -3,13 +3,14 @@ package consts
 import "time"
 
 const (
-	Issuer     = "OneDrive"
-	Admin      = "Admin"
-	User       = "User"
-	ThirtyDays = time.Hour * 24 * 30
-	AccountID  = "accountID"
-	ID         = "id"
-	Language   = "language"
+	Issuer          = "OneDrive"
+	Admin           = "Admin"
+	User            = "User"
+	ThirtyDays      = time.Hour * 24 * 30
+	AccountID       = "accountID"
+	ID              = "id"
+	Language        = "language"
+	DefalutLanguage = "zh"
 
 	HlogFilePath = "./tmp/hlog/logs/"
 	KlogFilePath = "./tmp/klog/logs/"
