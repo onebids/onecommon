@@ -74,6 +74,13 @@ func ParseIds(ids []string) []int32 {
 	return result
 }
 
+func MergeInt32Slices(slice1, slice2 []int32) []int32 {
+	merged := make([]int32, 0, len(slice1)+len(slice2))
+	merged = append(merged, slice1...)
+	merged = append(merged, slice2...)
+	return RemoveDuplicateInt32(merged)
+}
+
 func RemoveDuplicateInt32(slice []int32) []int32 {
 	if len(slice) == 0 {
 		return slice
