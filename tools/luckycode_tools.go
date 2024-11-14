@@ -73,3 +73,24 @@ func ParseIds(ids []string) []int32 {
 
 	return result
 }
+
+func RemoveDuplicateInt32(slice []int32) []int32 {
+	if len(slice) == 0 {
+		return slice
+	}
+	// 先排序
+	sort.Slice(slice, func(i, j int) bool {
+		return slice[i] < slice[j]
+	})
+
+	// 去重
+	j := 0
+	for i := 1; i < len(slice); i++ {
+		if slice[j] != slice[i] {
+			j++
+			slice[j] = slice[i]
+		}
+	}
+
+	return slice[:j+1]
+}
