@@ -7,11 +7,14 @@ replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 require (
 	aidanwoods.dev/go-paseto v1.5.2
 	github.com/apache/thrift v0.16.0
+	github.com/bytedance/gopkg v0.1.1
+	github.com/bytedance/sonic v1.12.2
 	github.com/cloudwego/hertz v0.9.3
 	github.com/cloudwego/kitex v0.11.3
 	github.com/hashicorp/consul/api v1.26.1
 	github.com/hertz-contrib/gzip v0.0.3
 	github.com/hertz-contrib/paseto v0.0.0-20230508023022-71af6635a26c
+	github.com/jinzhu/copier v0.4.0
 	github.com/kitex-contrib/config-consul v0.1.3
 	github.com/kitex-contrib/obs-opentelemetry v0.2.7
 	github.com/kitex-contrib/obs-opentelemetry/logging/zap v0.0.0-20240515092919-1f776656cb66
@@ -29,8 +32,6 @@ require (
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bytedance/go-tagexpr/v2 v2.9.2 // indirect
-	github.com/bytedance/gopkg v0.1.1 // indirect
-	github.com/bytedance/sonic v1.12.2 // indirect
 	github.com/bytedance/sonic/loader v0.2.0 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
