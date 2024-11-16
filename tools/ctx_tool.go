@@ -13,3 +13,8 @@ func GetCtxValue(ctx context.Context, key string, defaultValue string) string {
 		return defaultValue
 	}
 }
+
+func SetCtxValue(ctx context.Context, key string, value string) context.Context {
+	ctx = metainfo.WithValue(ctx, key, value)
+	return ctx
+}
