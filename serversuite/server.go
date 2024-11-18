@@ -15,19 +15,16 @@
 package serversuite
 
 import (
-	"github.com/kitex-contrib/obs-opentelemetry/provider"
-	"github.com/onebids/onecommon/mtl"
-	"os"
-
+	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/transmeta"
 	"github.com/cloudwego/kitex/server"
-	"github.com/kitex-contrib/config-consul/consul"
-	consulServer "github.com/kitex-contrib/config-consul/server"
 	prometheus "github.com/kitex-contrib/monitor-prometheus"
+	"github.com/kitex-contrib/obs-opentelemetry/provider"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	registryconsul "github.com/kitex-contrib/registry-consul"
+	"github.com/onebids/onecommon/mtl"
 )
 
 type CommonServerSuite struct {
@@ -45,36 +42,35 @@ func (s CommonServerSuite) Options() []server.Option {
 	if err != nil {
 		klog.Fatal(err)
 	}
-
 	opts = append(opts, server.WithRegistry(r))
 
-	if os.Getenv("CONFIG_CENTER_ENABLED") == "true" {
-		consulNodes := os.Getenv("CONFIG_CENTER_NODES")
-		if consulNodes != "" {
-			consulClient, err := consul.NewClient(consul.Options{})
-			if err != nil {
-				klog.Error(err)
-			} else {
-				opts = append(opts, server.WithSuite(consulServer.NewSuite(s.CurrentServiceName, consulClient)))
-			}
-		}
-	}
+	// ... consul 配置代码 ...
 
-	_ = provider.NewOpenTelemetryProvider(
-		provider.WithSdkTracerProvider(mtl.TracerProvider),
+	// 初始化 OpenTelemetry Provider
+	p := provider.NewOpenTelemetryProvider(
+		provider.WithServiceName(s.CurrentServiceName), // 添加服务名
 		provider.WithExportEndpoint(s.OtelEndpoint),
 		provider.WithEnableMetrics(false),
 		provider.WithEnableTracing(true),
 		provider.WithInsecure(),
 	)
-	klog.Info("初始化 otel provider: 当前名字称：", s.CurrentServiceName, " 注册地址：", s.RegistryAddr, " 上报地址：", s.OtelEndpoint)
-	// 2. 服务配置
+
+	// 注册关闭钩子
+	server.RegisterShutdownHook(func() {
+		if err := p.Shutdown(context.Background()); err != nil {
+			klog.Errorf("Failed to shutdown OpenTelemetry provider: %v", err)
+		}
+	})
+
+	klog.Infof("初始化 otel provider: 当前名字称：%s 注册地址：%s 上报地址：%s",
+		s.CurrentServiceName, s.RegistryAddr, s.OtelEndpoint)
+
 	opts = append(opts,
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 			ServiceName: s.CurrentServiceName,
 		}),
-		server.WithSuite(tracing.NewServerSuite()), // 这个是正确的
-		server.WithTracer(prometheus.NewServerTracer("", "",
+		server.WithSuite(tracing.NewServerSuite()),
+		server.WithTracer(prometheus.NewServerTracer(s.CurrentServiceName, "",
 			prometheus.WithDisableServer(true),
 			prometheus.WithRegistry(mtl.Registry))),
 	)
