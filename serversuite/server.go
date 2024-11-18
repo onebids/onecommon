@@ -67,13 +67,16 @@ func (s CommonServerSuite) Options() []server.Option {
 		provider.WithEnableTracing(true),
 		provider.WithInsecure(),
 	)
-
+	klog.Info("初始化 otel provider: 当前名字称：", s.CurrentServiceName, " 注册地址：", s.RegistryAddr, " 上报地址：", s.OtelEndpoint)
+	// 2. 服务配置
 	opts = append(opts,
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 			ServiceName: s.CurrentServiceName,
 		}),
-		server.WithSuite(tracing.NewServerSuite()),
-		server.WithTracer(prometheus.NewServerTracer("", "", prometheus.WithDisableServer(true), prometheus.WithRegistry(mtl.Registry))),
+		server.WithSuite(tracing.NewServerSuite()), // 这个是正确的
+		server.WithTracer(prometheus.NewServerTracer("", "",
+			prometheus.WithDisableServer(true),
+			prometheus.WithRegistry(mtl.Registry))),
 	)
 
 	return opts
