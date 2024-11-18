@@ -33,6 +33,7 @@ import (
 type CommonServerSuite struct {
 	CurrentServiceName string
 	RegistryAddr       string
+	OetlEndpoint       string
 }
 
 func (s CommonServerSuite) Options() []server.Option {
@@ -59,7 +60,11 @@ func (s CommonServerSuite) Options() []server.Option {
 		}
 	}
 
-	_ = provider.NewOpenTelemetryProvider(provider.WithSdkTracerProvider(mtl.TracerProvider), provider.WithEnableMetrics(false))
+	_ = provider.NewOpenTelemetryProvider(
+		provider.WithSdkTracerProvider(mtl.TracerProvider),
+		provider.WithExportEndpoint(s.OetlEndpoint),
+		provider.WithEnableMetrics(false),
+	)
 
 	opts = append(opts,
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
