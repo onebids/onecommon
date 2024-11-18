@@ -15,6 +15,8 @@
 package serversuite
 
 import (
+	"github.com/kitex-contrib/obs-opentelemetry/provider"
+	"github.com/onebids/onecommon/mtl"
 	"os"
 
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -23,6 +25,7 @@ import (
 	"github.com/cloudwego/kitex/server"
 	"github.com/kitex-contrib/config-consul/consul"
 	consulServer "github.com/kitex-contrib/config-consul/server"
+	prometheus "github.com/kitex-contrib/monitor-prometheus"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	registryconsul "github.com/kitex-contrib/registry-consul"
 )
@@ -56,14 +59,14 @@ func (s CommonServerSuite) Options() []server.Option {
 		}
 	}
 
-	//_ = provider.NewOpenTelemetryProvider(provider.WithSdkTracerProvider(mtl.TracerProvider), provider.WithEnableMetrics(false))
+	_ = provider.NewOpenTelemetryProvider(provider.WithSdkTracerProvider(mtl.TracerProvider), provider.WithEnableMetrics(false))
 
 	opts = append(opts,
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{
 			ServiceName: s.CurrentServiceName,
 		}),
 		server.WithSuite(tracing.NewServerSuite()),
-		//server.WithTracer(prometheus.NewServerTracer("", "", prometheus.WithDisableServer(true), prometheus.WithRegistry(mtl.Registry))),
+		server.WithTracer(prometheus.NewServerTracer("", "", prometheus.WithDisableServer(true), prometheus.WithRegistry(mtl.Registry))),
 	)
 
 	return opts

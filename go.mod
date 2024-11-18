@@ -16,6 +16,7 @@ require (
 	github.com/hertz-contrib/paseto v0.0.0-20230508023022-71af6635a26c
 	github.com/jinzhu/copier v0.4.0
 	github.com/kitex-contrib/config-consul v0.1.3
+	github.com/kitex-contrib/monitor-prometheus v0.2.0
 	github.com/kitex-contrib/obs-opentelemetry v0.2.7
 	github.com/kitex-contrib/obs-opentelemetry/logging/zap v0.0.0-20240515092919-1f776656cb66
 	github.com/kitex-contrib/registry-consul v0.0.0-20240508100819-2905e45155c1
@@ -89,8 +90,14 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
+	go.opentelemetry.io/contrib/instrumentation/runtime v0.45.0 // indirect
+	go.opentelemetry.io/contrib/propagators/b3 v1.20.0 // indirect
+	go.opentelemetry.io/contrib/propagators/ot v1.20.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlpmetric v0.42.0 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc v0.42.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.30.0 // indirect
 	go.opentelemetry.io/otel/metric v1.30.0 // indirect
+	go.opentelemetry.io/otel/sdk/metric v1.19.0 // indirect
 	go.opentelemetry.io/otel/trace v1.30.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.3.1 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
