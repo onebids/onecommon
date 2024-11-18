@@ -50,6 +50,7 @@ func (s CommonServerSuite) Options() []server.Option {
 	p := provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(s.CurrentServiceName), // 添加服务名
 		provider.WithExportEndpoint(s.OtelEndpoint),
+		//provider.WithSdkTracerProvider(mtl.TracerProvider),
 		provider.WithEnableMetrics(false),
 		provider.WithEnableTracing(true),
 		provider.WithInsecure(),
