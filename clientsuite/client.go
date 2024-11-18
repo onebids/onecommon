@@ -44,13 +44,11 @@ func (s CommonClientSuite) Options() []client.Option {
 		client.WithLoadBalancer(loadbalance.NewWeightedBalancer()), // load balance
 		//client.WithMuxConnection(1),                                // multiplexing 这个在windown 下不支持
 		client.WithMetaHandler(transmeta.ClientHTTP2Handler),
-	}
-	opts = append(opts,
 		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{
 			ServiceName: s.CurrentServiceName,
 		}),
 		client.WithSuite(tracing.NewClientSuite()),
-	)
+	}
 
 	return opts
 }
