@@ -3,6 +3,7 @@ module github.com/onebids/onecommon
 go 1.22.4
 
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
+replace github.com/chenzhuoyu/iasm => github.com/cloudwego/iasm v0.2.0
 
 require (
 	aidanwoods.dev/go-paseto v1.5.2
