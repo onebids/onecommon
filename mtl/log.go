@@ -19,9 +19,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/cloudwego/kitex/server"
-
 	"github.com/cloudwego/kitex/pkg/klog"
+	"github.com/cloudwego/kitex/server"
 	kitexzap "github.com/kitex-contrib/obs-opentelemetry/logging/zap"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
