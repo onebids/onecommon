@@ -26,11 +26,13 @@ func CommonMW() []app.HandlerFunc {
 }
 
 func PasetoAuth(audience string, pi model.PasetoConfig) app.HandlerFunc {
+
 	pf, err := paseto.NewV4PublicParseFunc(pi.PubKey, []byte(pi.Implicit), paseto.WithAudience(audience), paseto.WithNotBefore())
 	if err != nil {
 		hlog.Fatal(err)
 	}
 	sh := func(ctx context.Context, c *app.RequestContext, token *pt.Token) {
+		hlog.Info("解析成功：token", token)
 		aid, err := token.GetString("id")
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, BuildBaseResp(errno.BadRequest.WithMessage("missing accountID in token")))
@@ -44,8 +46,11 @@ func PasetoAuth(audience string, pi model.PasetoConfig) app.HandlerFunc {
 	}
 
 	eh := func(ctx context.Context, c *app.RequestContext) {
+
+		hlog.Info("解析失败", c.GetHeader("Authorization"))
 		c.JSON(http.StatusUnauthorized, BuildBaseResp(errno.BadRequest.WithMessage("invalid token")))
 		c.Abort()
 	}
+
 	return paseto.New(paseto.WithParseFunc(pf), paseto.WithSuccessHandler(sh), paseto.WithErrorFunc(eh))
 }
