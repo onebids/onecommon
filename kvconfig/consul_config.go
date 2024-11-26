@@ -10,39 +10,9 @@ import (
 
 type CommonConfig struct {
 	Env   string
-	Kitex Kitex `yaml:"kitex"`
-	MySQL MySQL `yaml:"mysql"`
-	Redis Redis `yaml:"redis"`
-}
-
-type MySQL struct {
-	DSN string `yaml:"dsn"`
-}
-
-type Redis struct {
-	Address  string `yaml:"address"`
-	Username string `yaml:"username"`
-	Password string `yaml:"password"`
-	DB       int    `yaml:"db"`
-}
-
-type Kitex struct {
-	Service         string `yaml:"service"`
-	Address         string `yaml:"address"`
-	MetricsPort     string `yaml:"metrics_port"`
-	EnablePprof     bool   `yaml:"enable_pprof"`
-	EnableGzip      bool   `yaml:"enable_gzip"`
-	EnableAccessLog bool   `yaml:"enable_access_log"`
-	LogLevel        string `yaml:"log_level"`
-	LogFileName     string `yaml:"log_file_name"`
-	LogMaxSize      int    `yaml:"log_max_size"`
-	LogMaxBackups   int    `yaml:"log_max_backups"`
-	LogMaxAge       int    `yaml:"log_max_age"`
-}
-
-type OTel struct {
-	Endpoint string `yaml:"endpoint"`
-	Insecure bool   `yaml:"insecure"`
+	Kitex model.Kitex `yaml:"kitex"`
+	MySQL model.MySQL `yaml:"mysql"`
+	Redis model.Redis `yaml:"redis"`
 }
 
 func GetCommonConfig(registryAddr string) (*CommonConfig, error) {
