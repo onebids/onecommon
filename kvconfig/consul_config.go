@@ -13,6 +13,7 @@ type CommonConfig struct {
 	Kitex model.Kitex `yaml:"kitex"`
 	MySQL model.MySQL `yaml:"mysql"`
 	Redis model.Redis `yaml:"redis"`
+	OTel  model.OTel  `yaml:"otel"`
 }
 
 func GetCommonConfig(registryAddr string) (*CommonConfig, error) {
