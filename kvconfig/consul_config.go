@@ -40,6 +40,11 @@ type Kitex struct {
 	LogMaxAge       int    `yaml:"log_max_age"`
 }
 
+type OTel struct {
+	Endpoint string `yaml:"endpoint"`
+	Insecure bool   `yaml:"insecure"`
+}
+
 func GetCommonConfig(registryAddr string) (*CommonConfig, error) {
 	client, err := api.NewClient(&api.Config{Address: registryAddr})
 	if err != nil {
@@ -58,7 +63,27 @@ func GetCommonConfig(registryAddr string) (*CommonConfig, error) {
 		klog.Error("parse yaml error - %v", err)
 		panic(err)
 	}
+	return conf, nil
+}
 
+func GetKvConfig[T any](registryAddr string, keyName string) (*T, error) {
+	client, err := api.NewClient(&api.Config{Address: registryAddr})
+	if err != nil {
+		fmt.Println("Error creating Consul client:", err)
+		return nil, err
+	}
+	//获取配置
+	content, _, err := client.KV().Get(keyName, nil)
+	if err != nil {
+		fmt.Println("Error getting config:", err)
+		return nil, err
+	}
+	conf := new(T)
+	err = yaml.Unmarshal(content.Value, &conf)
+	if err != nil {
+		klog.Error("parse yaml error - %v", err)
+		panic(err)
+	}
 	return conf, nil
 }
 
