@@ -8,6 +8,7 @@ const (
 	User            = "User"
 	ThirtyDays      = time.Hour * 24 * 30
 	AccountID       = "accountID"
+	From            = "x-from"
 	ID              = "id"
 	Language        = "language"
 	DefaultLanguage = "zh"
