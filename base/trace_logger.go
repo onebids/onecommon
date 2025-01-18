@@ -3,7 +3,6 @@ package base
 import (
 	"context"
 	"fmt"
-	"os"
 	"path/filepath"
 	"runtime"
 
@@ -15,12 +14,14 @@ import (
 var projectRoot string
 
 func init() {
-	// 获取当前工作目录作为项目根目录
-	var err error
-	projectRoot, err = os.Getwd()
-	if err != nil {
+	// 使用编译时的文件路径来确定项目根目录
+	_, file, _, ok := runtime.Caller(0)
+	if !ok {
 		projectRoot = ""
+		return
 	}
+	// 获取base包所在目录的父目录作为项目根目录
+	projectRoot = filepath.Dir(filepath.Dir(file))
 	fmt.Println("根目录：", projectRoot)
 }
 
