@@ -21,6 +21,7 @@ func init() {
 	if err != nil {
 		projectRoot = ""
 	}
+	fmt.Println("根目录：", projectRoot)
 }
 
 type TraceLogger struct {
