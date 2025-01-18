@@ -29,7 +29,6 @@ func getCallerInfo(skip int) string {
 
 func (l *TraceLogger) logWithTrace(ctx context.Context, level, msg string) {
 	caller := getCallerInfo(4)
-	fmt.Println("logWithTrace -------------------------  " + msg)
 	span := trace.SpanFromContext(ctx)
 	if span.IsRecording() {
 		span.AddEvent("log", trace.WithAttributes(
