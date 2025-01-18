@@ -15,11 +15,9 @@
 package mtl
 
 import (
-	"context"
+	"github.com/onebids/onecommon/base"
 	"io"
 	"time"
-
-	"go.opentelemetry.io/otel/trace"
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/server"
@@ -43,28 +41,13 @@ func InitLog(ioWriter io.Writer) {
 	}
 	//}
 	opts = append(opts, kitexzap.WithRecordStackTraceInSpan(true))
-	opts = append(opts, kitexzap.WithCustomFields(
-		func(ctx context.Context) []zapcore.Field {
-			span := trace.SpanFromContext(ctx)
-			if !span.SpanContext().IsValid() {
-				return []zapcore.Field{}
-			}
-			traceID := span.SpanContext().TraceID().String()
-			spanID := span.SpanContext().SpanID().String()
-			if traceID == "" || spanID == "" {
-				return []zapcore.Field{}
-			}
-			return []zapcore.Field{
-				zap.String("trace_id", traceID),
-				zap.String("span_id", spanID),
-			}
-		}))
 
 	server.RegisterShutdownHook(func() {
 		output.Sync() //nolint:errcheck
 	})
-	log := kitexzap.NewLogger(opts...)
+	//log := kitexzap.NewLogger(opts...)
 	//log := hertzlogrus.NewLogger()
+	log := base.NewTraceLogger()
 	klog.SetLogger(log)
 	klog.SetLevel(klog.LevelTrace)
 	klog.SetOutput(output)
