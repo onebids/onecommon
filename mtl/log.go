@@ -26,7 +26,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-func InitLog(ioWriter io.Writer) {
+func InitLog(ioWriter io.Writer, rootPath string) {
 	var opts []kitexzap.Option
 	var output zapcore.WriteSyncer
 	//if os.Getenv("GO_ENV") != "online" {
@@ -47,7 +47,7 @@ func InitLog(ioWriter io.Writer) {
 	})
 	//log := kitexzap.NewLogger(opts...)
 	//log := hertzlogrus.NewLogger()
-	log := base.NewTraceLogger()
+	log := base.NewTraceLogger(rootPath)
 	klog.SetLogger(log)
 	klog.SetLevel(klog.LevelTrace)
 	klog.SetOutput(output)

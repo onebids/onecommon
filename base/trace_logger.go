@@ -11,31 +11,31 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-var projectRoot string
-
 func init() {
 	// 使用编译时的文件路径来确定项目根目录
-	_, file, _, ok := runtime.Caller(0)
-	if !ok {
-		projectRoot = ""
-		return
-	}
-	// 获取base包所在目录的父目录作为项目根目录
-	projectRoot = filepath.Dir(filepath.Dir(file))
-	fmt.Println("根目录：", projectRoot)
+	//_, file, _, ok := runtime.Caller(0)
+	//if !ok {
+	//	projectRoot = ""
+	//	return
+	//}
+	//// 获取base包所在目录的父目录作为项目根目录
+	//projectRoot = filepath.Dir(filepath.Dir(file))
+	//fmt.Println("根目录：", projectRoot)
 }
 
 type TraceLogger struct {
 	*kitexlogrus.Logger
+	prefix string
 }
 
-func NewTraceLogger() *TraceLogger {
+func NewTraceLogger(prefix string) *TraceLogger {
 	return &TraceLogger{
 		Logger: kitexlogrus.NewLogger(),
+		prefix: prefix,
 	}
 }
 
-func getCallerInfo(skip int) string {
+func getCallerInfo(skip int, projectRoot string) string {
 	_, file, line, ok := runtime.Caller(skip)
 	if !ok {
 		return ""
@@ -50,7 +50,7 @@ func getCallerInfo(skip int) string {
 }
 
 func (l *TraceLogger) logWithTrace(ctx context.Context, level, msg string) {
-	caller := getCallerInfo(4)
+	caller := getCallerInfo(4, l.prefix)
 	span := trace.SpanFromContext(ctx)
 	if span.IsRecording() {
 		span.AddEvent("log", trace.WithAttributes(
