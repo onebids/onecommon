@@ -15,12 +15,9 @@
 package mtl
 
 import (
-	"context"
 	"io"
 	"os"
 	"time"
-
-	"go.opentelemetry.io/otel/trace"
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/server"
@@ -44,17 +41,17 @@ func InitLog(ioWriter io.Writer) {
 		}
 	}
 	opts = append(opts, kitexzap.WithRecordStackTraceInSpan(true))
-	opts = append(opts, kitexzap.WithCustomFields(
-		func(ctx context.Context) []zapcore.Field {
-			span := trace.SpanFromContext(ctx)
-			if !span.SpanContext().IsValid() {
-				return nil
-			}
-			return []zapcore.Field{
-				zap.String("trace_id", span.SpanContext().TraceID().String()),
-				zap.String("span_id", span.SpanContext().SpanID().String()),
-			}
-		}))
+	//opts = append(opts, kitexzap.WithCustomFields(
+	//	func(ctx context.Context) []zapcore.Field {
+	//		span := trace.SpanFromContext(ctx)
+	//		if !span.SpanContext().IsValid() {
+	//			return nil
+	//		}
+	//		return []zapcore.Field{
+	//			zap.String("trace_id", span.SpanContext().TraceID().String()),
+	//			zap.String("span_id", span.SpanContext().SpanID().String()),
+	//		}
+	//	}))
 
 	server.RegisterShutdownHook(func() {
 		output.Sync() //nolint:errcheck
