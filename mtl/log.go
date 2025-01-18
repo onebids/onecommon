@@ -21,7 +21,6 @@ import (
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/server"
-	hertzlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	kitexzap "github.com/kitex-contrib/obs-opentelemetry/logging/zap"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -41,11 +40,14 @@ func InitLog(ioWriter io.Writer) {
 			FlushInterval: time.Minute,
 		}
 	}
+	opts = append(opts, kitexzap.WithRecordStackTraceInSpan(true))
+	//opts = append(opts, kitexzap.WithCustomFields())
+
 	server.RegisterShutdownHook(func() {
 		output.Sync() //nolint:errcheck
 	})
-	//log := kitexzap.NewLogger(opts...)
-	log := hertzlogrus.NewLogger()
+	log := kitexzap.NewLogger(opts...)
+	//log := hertzlogrus.NewLogger()
 	klog.SetLogger(log)
 	klog.SetLevel(klog.LevelTrace)
 	klog.SetOutput(output)
