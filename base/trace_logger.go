@@ -3,11 +3,25 @@ package base
 import (
 	"context"
 	"fmt"
+	"os"
+	"path/filepath"
+	"runtime"
+
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
-	"runtime"
 )
+
+var projectRoot string
+
+func init() {
+	// 获取当前工作目录作为项目根目录
+	var err error
+	projectRoot, err = os.Getwd()
+	if err != nil {
+		projectRoot = ""
+	}
+}
 
 type TraceLogger struct {
 	*kitexlogrus.Logger
@@ -23,6 +37,12 @@ func getCallerInfo(skip int) string {
 	_, file, line, ok := runtime.Caller(skip)
 	if !ok {
 		return ""
+	}
+	if projectRoot != "" {
+		// 将绝对路径转换为相对于项目根目录的路径
+		if rel, err := filepath.Rel(projectRoot, file); err == nil {
+			file = rel
+		}
 	}
 	return fmt.Sprintf("%s:%d", file, line)
 }
