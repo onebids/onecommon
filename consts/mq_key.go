@@ -19,4 +19,7 @@ const (
 	MqActivityRoutingKey = "OpenActivityRoutingKey"
 
 	RdmOrderExpiredKey = "OrderExpired:%s"
+
+	// 机器人通知队列
+	MQ_USER_IMAGE_QUEUE = "mq.user.image.queue"
 )
