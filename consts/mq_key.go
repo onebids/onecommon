@@ -22,4 +22,6 @@ const (
 
 	// 机器人通知队列
 	MQ_USER_IMAGE_QUEUE = "mq.user.image.queue"
+
+	UserImageResultRoutingKey = "mq.user.image.result.key"
 )
