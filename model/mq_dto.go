@@ -12,5 +12,5 @@ type UserImageResultMqDto struct {
 }
 
 type ActivityMqDto struct {
-	ActivityID int64
+	ActivityId string
 }
