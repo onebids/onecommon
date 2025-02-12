@@ -10,3 +10,7 @@ type UserImageResultMqDto struct {
 	Success   bool   `json:"success"`
 	Error     string `json:"error,omitempty"`
 }
+
+type ActivityMqDto struct {
+	ActivityID int64
+}
