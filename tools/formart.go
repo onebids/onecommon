@@ -1,5 +1,10 @@
 package tools
 
+import (
+	"strconv"
+	"strings"
+)
+
 // BoolFormat 三目运算
 func BoolFormat(expr bool, a, b interface{}) interface{} {
 	if expr {
@@ -20,4 +25,12 @@ func BoolFormatStr(expr bool, a, b string) string {
 		return a
 	}
 	return b
+}
+
+func int64SliceToString(goldIds []int64) string {
+	strSlice := make([]string, len(goldIds))
+	for i, id := range goldIds {
+		strSlice[i] = strconv.FormatInt(id, 10)
+	}
+	return strings.Join(strSlice, ",")
 }
