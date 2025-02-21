@@ -2,10 +2,10 @@ package tools
 
 import "strings"
 
-func ConvImagePath(path string) string {
+func ConvImagePath(path string, baseUrl string) string {
 
 	if !strings.HasPrefix(path, "http") {
-		path = "https://extest123.sukeeper.com/obs/" + path
+		path = baseUrl + path
 	}
 
 	return path
