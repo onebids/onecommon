@@ -17,6 +17,7 @@ package mtl
 import (
 	"github.com/onebids/onecommon/base"
 	"io"
+	"os"
 	"time"
 
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -33,7 +34,18 @@ func InitLog(ioWriter io.Writer, rootPath string) {
 	//	opts = append(opts, kitexzap.WithCoreEnc(zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())))
 	//	output = zapcore.AddSync(ioWriter)
 	//} else {
+	// 创建控制台输出
+	consoleOutput := zapcore.AddSync(io.Writer(os.Stdout))
+	// 组合控制台和文件输出
+	output = zapcore.NewMultiWriteSyncer(
+		consoleOutput,
+		&zapcore.BufferedWriteSyncer{
+			WS:            zapcore.AddSync(ioWriter),
+			FlushInterval: time.Minute,
+		},
+	)
 	opts = append(opts, kitexzap.WithCoreEnc(zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())))
+	opts = append(opts, kitexzap.WithRecordStackTraceInSpan(true))
 	// async log
 	output = &zapcore.BufferedWriteSyncer{
 		WS:            zapcore.AddSync(ioWriter),
