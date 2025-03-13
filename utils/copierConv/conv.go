@@ -205,3 +205,38 @@ func GetFloat64ToInt64Converter() copier.TypeConverter {
 		},
 	}
 }
+
+// GetInt32ToBoolConverter 返回一个类型转换器，用于将int32类型转换为bool类型
+// 转换规则：非零值转换为true，零值转换为false
+func GetInt32ToBoolConverter() copier.TypeConverter {
+	return copier.TypeConverter{
+		SrcType: int32(0),
+		DstType: false,
+		Fn: func(src interface{}) (interface{}, error) {
+			i, ok := src.(int32)
+			if !ok {
+				return nil, errors.New("源类型不匹配")
+			}
+			return i != 0, nil
+		},
+	}
+}
+
+// GetBoolToInt32Converter 返回一个类型转换器，用于将bool类型转换为int32类型
+// 转换规则：true转换为1，false转换为0
+func GetBoolToInt32Converter() copier.TypeConverter {
+	return copier.TypeConverter{
+		SrcType: false,
+		DstType: int32(0),
+		Fn: func(src interface{}) (interface{}, error) {
+			b, ok := src.(bool)
+			if !ok {
+				return nil, errors.New("源类型不匹配")
+			}
+			if b {
+				return int32(1), nil
+			}
+			return int32(0), nil
+		},
+	}
+}
