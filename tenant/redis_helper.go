@@ -5,8 +5,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/redis/go-redis/v9"
 	"time"
+
+	"github.com/redis/go-redis/v9"
 )
 
 // RedisHelper Redis辅助工具接口
@@ -64,7 +65,7 @@ type RedisHelper interface {
 	SRem(ctx context.Context, key string, members ...interface{}) error
 
 	// ZAdd 添加有序集合成员
-	ZAdd(ctx context.Context, key string, members ...*redis.Z) error
+	ZAdd(ctx context.Context, key string, members ...redis.Z) error
 
 	// ZRange 获取有序集合范围
 	ZRange(ctx context.Context, key string, start, stop int64) ([]string, error)
@@ -276,7 +277,7 @@ func (h *tenantRedisHelper) SRem(ctx context.Context, key string, members ...int
 }
 
 // ZAdd 添加有序集合成员
-func (h *tenantRedisHelper) ZAdd(ctx context.Context, key string, members ...*redis.Z) error {
+func (h *tenantRedisHelper) ZAdd(ctx context.Context, key string, members ...redis.Z) error {
 	client := h.manager.GetClientFromContext(ctx)
 	key = h.manager.WithTenantPrefix(ctx, key)
 
