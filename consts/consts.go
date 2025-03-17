@@ -12,6 +12,9 @@ const (
 	ID              = "id"
 	Language        = "language"
 	DefaultLanguage = "zh"
+	UserID          = "userID"   // 用户ID常量
+	TenantID        = "tenantID" // 租户ID常量
+	TraceID         = "traceID"  // 追踪ID常量
 
 	HlogFilePath = "./tmp/hlog/logs/"
 	KlogFilePath = "./tmp/klog/logs/"
