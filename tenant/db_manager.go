@@ -2,21 +2,22 @@ package tenant
 
 import (
 	"fmt"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
-	"gorm.io/plugin/opentelemetry/tracing"
 	"log"
 	"os"
 	"sync"
 	"time"
+
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"gorm.io/plugin/opentelemetry/tracing"
 )
 
 // MigrateFunc 定义数据库迁移函数类型
 type MigrateFunc func(db *gorm.DB) error
 
-// Config 数据库管理器配置
-type Config struct {
+// DBConfig 数据库管理器配置
+type DBConfig struct {
 	// DSN连接字符串或模板
 	// 对于多租户情况，可以是带有%s占位符的模板，如：
 	// "user:pass@tcp(host:port)/%s?charset=utf8mb4&parseTime=True&loc=Local"
@@ -29,7 +30,7 @@ type Config struct {
 	TenantDSNs map[string]string
 
 	// 数据库默认配置
-	// 默认值: 见NewDefaultConfig函数
+	// 默认值: 见NewDefaultDBConfig函数
 	DBConfig *gorm.Config
 
 	// 是否启用追踪
@@ -49,9 +50,9 @@ type Config struct {
 	MigrateFunc MigrateFunc
 }
 
-// NewDefaultConfig 创建带有默认值的配置
-func NewDefaultConfig() *Config {
-	return &Config{
+// NewDefaultDBConfig 创建带有默认值的配置
+func NewDefaultDBConfig() *DBConfig {
+	return &DBConfig{
 		TenantDSNs:    make(map[string]string),
 		EnableTracing: false,
 		LogLevel:      logger.Error,
@@ -75,18 +76,18 @@ func NewDefaultConfig() *Config {
 type TenantDBManager struct {
 	dbs           map[string]*gorm.DB
 	mutex         sync.RWMutex
-	config        *Config
+	config        *DBConfig
 	defaultConfig *gorm.Config
 }
 
 // NewTenantDBManager 创建租户数据库管理器
-func NewTenantDBManager(config *Config) *TenantDBManager {
+func NewTenantDBManager(config *DBConfig) *TenantDBManager {
 	// 如果传入nil配置，则使用默认配置
 	if config == nil {
-		config = NewDefaultConfig()
+		config = NewDefaultDBConfig()
 	} else {
 		// 填充默认值
-		defaultConfig := NewDefaultConfig()
+		defaultConfig := NewDefaultDBConfig()
 
 		// 租户DSNs为nil时初始化
 		if config.TenantDSNs == nil {

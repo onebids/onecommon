@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/onebids/onecommon/errors"
-	"io"
 	"os"
+
+	"github.com/onebids/onecommon/errors"
 )
 
 // 定义应用程序错误码
@@ -42,12 +42,12 @@ func main() {
 	fmt.Println()
 
 	// 示例5: 获取错误信息
-	if e, ok := err4.(*errors.Error); ok {
-		fmt.Printf("示例5 - 获取错误信息:\n")
-		fmt.Printf("错误码: %d\n", e.GetCode())
-		fmt.Printf("错误消息: %s\n", e.GetMessage())
-		fmt.Println(e.FormatStack())
-	}
+	//if e, ok := err4.(*errors.Error); ok {
+	//	fmt.Printf("示例5 - 获取错误信息:\n")
+	//	fmt.Printf("错误码: %d\n", e.GetCode())
+	//	fmt.Printf("错误消息: %s\n", e.GetMessage())
+	//	fmt.Println(e.FormatStack())
+	//}
 }
 
 // 模拟数据库操作

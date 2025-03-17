@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/onebids/onecommon/tenant"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"time"
 )
 
 // 示例模型
-type User struct {
+type DBUser struct {
 	ID   uint   `gorm:"primarykey"`
 	Name string `gorm:"size:100"`
 }
@@ -22,7 +23,7 @@ func main() {
 	config.DSNTemplate = "user:password@tcp(localhost:3306)/%s?charset=utf8mb4&parseTime=True&loc=Local"
 	// 设置迁移函数
 	config.MigrateFunc = func(db *gorm.DB) error {
-		return db.AutoMigrate(&User{})
+		return db.AutoMigrate(&DBUser{})
 	}
 
 	// 创建数据库管理器
