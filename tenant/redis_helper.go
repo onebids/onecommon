@@ -5,9 +5,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/redis/go-redis/v9"
 	"time"
-
-	"github.com/go-redis/redis/v8"
 )
 
 // RedisHelper Redis辅助工具接口

@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/redis/go-redis/v9"
 	"time"
 
-	"github.com/go-redis/redis/v8"
 	"github.com/onebids/onecommon/consts"
 	"github.com/onebids/onecommon/tenant"
 )

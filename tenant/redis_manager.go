@@ -4,11 +4,11 @@ package tenant
 import (
 	"context"
 	"fmt"
+	"github.com/redis/go-redis/v9"
+
+	"github.com/onebids/onecommon/consts"
 	"sync"
 	"time"
-
-	"github.com/go-redis/redis/v8"
-	"github.com/onebids/onecommon/consts"
 )
 
 // RedisConfig Redis管理器配置
