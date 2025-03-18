@@ -1,7 +1,8 @@
 package model
 
 type UserImageMqDto struct {
-	UserID int64
+	UserID   int64
+	TenantId string
 }
 
 type UserImageResultMqDto struct {
@@ -9,8 +10,10 @@ type UserImageResultMqDto struct {
 	AvatarUrl string `json:"avatar_url"`
 	Success   bool   `json:"success"`
 	Error     string `json:"error,omitempty"`
+	TenantId  string
 }
 
 type ActivityMqDto struct {
 	ActivityId string
+	TenantId   string
 }
