@@ -68,10 +68,10 @@ type DBConfig struct {
 func NewDefaultDBConfig() *DBConfig {
 	return &DBConfig{
 		TenantDSNs:         make(map[string]string),
-		EnableTracing:      false,
+		EnableTracing:      true,
 		LogLevel:           logger.Error,
 		SlowThreshold:      200 * time.Millisecond,
-		AutoCreateDatabase: false,
+		AutoCreateDatabase: true,
 		DefaultCharset:     "utf8mb4",
 		DefaultCollation:   "utf8mb4_general_ci",
 		DBConfig: &gorm.Config{
