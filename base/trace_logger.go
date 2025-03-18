@@ -3,6 +3,7 @@ package base
 import (
 	"context"
 	"fmt"
+	"github.com/onebids/onecommon/tools"
 	"path/filepath"
 	"runtime"
 
@@ -52,11 +53,13 @@ func getCallerInfo(skip int, projectRoot string) string {
 func (l *TraceLogger) logWithTrace(ctx context.Context, level, msg string) {
 	caller := getCallerInfo(4, l.prefix)
 	span := trace.SpanFromContext(ctx)
+	tenantId := tools.GetTenant(ctx)
 	if span.IsRecording() {
 		span.AddEvent("log", trace.WithAttributes(
 			attribute.String("level", level),
 			attribute.String("message", msg),
 			attribute.String("caller", caller),
+			attribute.String("tenantId", tenantId),
 		))
 	}
 }
