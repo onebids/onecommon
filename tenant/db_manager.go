@@ -1,9 +1,11 @@
 package tenant
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"sync"
 	"time"
 
@@ -48,15 +50,30 @@ type DBConfig struct {
 	// 迁移函数
 	// 默认值: nil (不执行迁移)
 	MigrateFunc MigrateFunc
+
+	// 是否自动创建数据库
+	// 默认值: false
+	AutoCreateDatabase bool
+
+	// 数据库字符集
+	// 默认值: utf8mb4
+	DefaultCharset string
+
+	// 数据库排序规则
+	// 默认值: utf8mb4_general_ci
+	DefaultCollation string
 }
 
 // NewDefaultDBConfig 创建带有默认值的配置
 func NewDefaultDBConfig() *DBConfig {
 	return &DBConfig{
-		TenantDSNs:    make(map[string]string),
-		EnableTracing: false,
-		LogLevel:      logger.Error,
-		SlowThreshold: 200 * time.Millisecond,
+		TenantDSNs:         make(map[string]string),
+		EnableTracing:      false,
+		LogLevel:           logger.Error,
+		SlowThreshold:      200 * time.Millisecond,
+		AutoCreateDatabase: false,
+		DefaultCharset:     "utf8mb4",
+		DefaultCollation:   "utf8mb4_general_ci",
 		DBConfig: &gorm.Config{
 			PrepareStmt:            true,
 			SkipDefaultTransaction: true,
@@ -92,6 +109,15 @@ func NewTenantDBManager(config *DBConfig) *TenantDBManager {
 		// 租户DSNs为nil时初始化
 		if config.TenantDSNs == nil {
 			config.TenantDSNs = make(map[string]string)
+		}
+
+		// 设置默认字符集和排序规则
+		if config.DefaultCharset == "" {
+			config.DefaultCharset = defaultConfig.DefaultCharset
+		}
+
+		if config.DefaultCollation == "" {
+			config.DefaultCollation = defaultConfig.DefaultCollation
 		}
 
 		// 数据库配置为nil时使用默认值
@@ -153,6 +179,47 @@ func (m *TenantDBManager) GetDefaultDB() (*gorm.DB, error) {
 	return m.GetDB("")
 }
 
+// extractDatabaseName 从DSN中提取数据库名称
+func extractDatabaseName(dsn string) string {
+	// 解析DSN格式: user:pass@tcp(host:port)/dbname?param=value
+	parts := strings.Split(dsn, "/")
+	if len(parts) < 2 {
+		return ""
+	}
+
+	// 处理查询参数
+	dbNameParts := strings.Split(parts[1], "?")
+	return dbNameParts[0]
+}
+
+// createDatabase 创建数据库
+func (m *TenantDBManager) createDatabase(dsn, dbName string) error {
+	// 创建一个不指定数据库的DSN
+	dsnWithoutDB := strings.Split(dsn, "/")[0] + "/"
+
+	// 连接到MySQL服务器（不指定数据库）
+	db, err := sql.Open("mysql", dsnWithoutDB)
+	if err != nil {
+		return fmt.Errorf("failed to connect to MySQL server: %w", err)
+	}
+	defer db.Close()
+
+	// 创建数据库
+	createSQL := fmt.Sprintf(
+		"CREATE DATABASE IF NOT EXISTS `%s` CHARACTER SET %s COLLATE %s",
+		dbName,
+		m.config.DefaultCharset,
+		m.config.DefaultCollation,
+	)
+
+	_, err = db.Exec(createSQL)
+	if err != nil {
+		return fmt.Errorf("failed to create database %s: %w", dbName, err)
+	}
+
+	return nil
+}
+
 // createDB 创建租户数据库连接
 func (m *TenantDBManager) createDB(tenantID string) (*gorm.DB, error) {
 	m.mutex.Lock()
@@ -176,9 +243,28 @@ func (m *TenantDBManager) createDB(tenantID string) (*gorm.DB, error) {
 		return nil, fmt.Errorf("no DSN configuration found for tenant: %s", tenantID)
 	}
 
-	// 创建新的DB连接
+	// 尝试连接数据库
 	db, err := gorm.Open(mysql.Open(dsn), m.defaultConfig)
-	if err != nil {
+
+	// 如果连接失败且启用了自动创建数据库
+	if err != nil && m.config.AutoCreateDatabase {
+		// 提取数据库名称
+		dbName := extractDatabaseName(dsn)
+		if dbName == "" {
+			return nil, fmt.Errorf("failed to extract database name from DSN for tenant %s", tenantID)
+		}
+
+		// 创建数据库
+		if createErr := m.createDatabase(dsn, dbName); createErr != nil {
+			return nil, fmt.Errorf("failed to auto-create database for tenant %s: %w", tenantID, createErr)
+		}
+
+		// 重新尝试连接
+		db, err = gorm.Open(mysql.Open(dsn), m.defaultConfig)
+		if err != nil {
+			return nil, fmt.Errorf("failed to connect to newly created database for tenant %s: %w", tenantID, err)
+		}
+	} else if err != nil {
 		return nil, fmt.Errorf("failed to connect to database for tenant %s: %w", tenantID, err)
 	}
 
