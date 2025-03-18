@@ -15,7 +15,7 @@
 package mtl
 
 import (
-	"github.com/onebids/onecommon/base"
+	"github.com/onebids/onecommon/logger"
 	"io"
 	"time"
 
@@ -58,7 +58,7 @@ func InitLog(ioWriter io.Writer, rootPath string) {
 	})
 	//log := kitexzap.NewLogger(opts...)
 	//log := hertzlogrus.NewLogger()
-	log := base.NewTraceLogger(rootPath)
+	log := logger.NewTraceLogger(rootPath)
 	klog.SetLogger(log)
 	klog.SetLevel(klog.LevelTrace)
 	klog.SetOutput(output)
