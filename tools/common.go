@@ -14,3 +14,13 @@ func StringSliceDiff(a, b []string) []string {
 	}
 	return diff
 }
+
+func SubSliceString(a []string, b string) []string {
+	var result []string
+	for _, v := range a {
+		if v != b {
+			result = append(result, v)
+		}
+	}
+	return result
+}
