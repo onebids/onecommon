@@ -22,6 +22,10 @@ func GetCtxValue(ctx context.Context, key string, defaultValue string) string {
 	if ok1 {
 		return lang
 	} else {
+		lang := ctx.Value(key)
+		if lang != nil {
+			return lang.(string)
+		}
 		return defaultValue
 	}
 }
