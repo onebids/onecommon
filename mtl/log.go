@@ -15,9 +15,10 @@
 package mtl
 
 import (
-	"github.com/onebids/onecommon/logger"
 	"io"
 	"time"
+
+	"github.com/onebids/onecommon/logger"
 
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/server"

@@ -15,6 +15,8 @@
 package clientsuite
 
 import (
+	"strings"
+
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/loadbalance"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
@@ -22,7 +24,6 @@ import (
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	consul "github.com/kitex-contrib/registry-consul"
 	"github.com/onebids/onecommon/utils"
-	"strings"
 )
 
 type CommonClientSuite struct {

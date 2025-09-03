@@ -3,9 +3,10 @@ package logger
 import (
 	"context"
 	"fmt"
-	"github.com/onebids/onecommon/tools"
 	"path/filepath"
 	"runtime"
+
+	"github.com/onebids/onecommon/tools"
 
 	kitexlogrus "github.com/kitex-contrib/obs-opentelemetry/logging/logrus"
 	"go.opentelemetry.io/otel/attribute"

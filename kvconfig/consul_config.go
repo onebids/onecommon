@@ -2,6 +2,7 @@ package kvconfig
 
 import (
 	"fmt"
+
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/hashicorp/consul/api"
 	"github.com/onebids/onecommon/model"
